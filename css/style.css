@@ -148,6 +148,12 @@ button:hover {
   color: red;
 }
 
+.tooltip {
+  font-family: 'Roboto', sans-serif;
+  color : red;
+  text-align: center;
+}
+
 /* =================================
   Helper Classes
 ==================================== */

@@ -5,6 +5,8 @@ function primeValues() {
   // Hides job input
   $("#other-title").hide();
 
+  $(".tooltip").hide();
+
   // Hides color selection
   $("#color").hide();
 
@@ -159,6 +161,7 @@ function isValidForm () {
 
   let validForm = true;
 
+  // Regex for validation of certain inputs
   const emailRegex = /\w+@\w+.[A-Za-z]{3}/;
   const creditCardNumberRegex = /\d{13,16}/;
   const zipCodeRegex = /\d{5}/;
@@ -216,12 +219,15 @@ function isValidForm () {
 
 }
 
+// Resets all css to fit valid info, so that invalids are correctly identified
 function resetInvalidInfo () {
   $("#name").removeClass("invalid-information");
   $("#mail").removeClass("invalid-information");
   $("label[for='name']").removeClass("invalid-label");
   $("label[for='mail']").removeClass("invalid-label");
   $("legend").eq(2).removeClass("invalid-label");
+
+  // Credit card info only
   if ($("#payment :selected").text() === "Credit Card") {
     $("#cc-num").removeClass("invalid-information");
     $("#zip").removeClass("invalid-information");
@@ -231,17 +237,27 @@ function resetInvalidInfo () {
     $("label[for='cvv']").removeClass("invalid-label");
   }
 }
-// Need to do the following:
 
-// (14): EXCEEDS: Provides one error message in real time (before form submission)
+// Displays email error if invalid email
+function displayPossError () {
+  const emailRegex = /\w+@\w+\.[A-Za-z]{3}/;
+  $(".tooltip").hide();
 
-// (15): EXCEEDS: Form provides at least one error message that changes depending
-//       on the error (ex/ Nothing entered in email versus incorrectly entered)
+  // Error if no text is entere
+  if ($("#mail").val() === "") {
+    $(".tooltip").eq(0).show();
+  }
 
-primeValues()
+  // Error if text is not a valid email
+  else if (emailRegex.test($("#mail").val()) === false) {
+    $(".tooltip").eq(1).show();
+  }
+}
 
 // Event listener for other job input
 $("#title").change(otherTitleSelected);
+
+$("#mail").keyup(displayPossError);
 
 // Event listener for if a theme is selected or not
 $("#design").change(shirtDesignSelected);
@@ -256,6 +272,8 @@ $("#payment").change(hidePaymentOptions);
 $("button").click(function(event) {
   if (isValidForm() === false) {
     event.preventDefault();
-    console.log("False Form");
   }
 });
+
+// Sets values for initial program run
+primeValues()
