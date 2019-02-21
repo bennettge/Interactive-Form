@@ -1,10 +1,16 @@
+// Austin Bennett
+// Unit 3 Project - Interactive Form
+
 // Sets values for the start the program
 function primeValues() {
+
   placeCursorOnLoad();
+  placeErrorMessages();
 
   // Hides job input
   $("#other-title").hide();
 
+  // Hides tool tips
   $(".tooltip").hide();
 
   // Hides color selection
@@ -16,13 +22,33 @@ function primeValues() {
   // Sets default payment to credit card
   $("#payment").val("credit card");
 
+  // Hides payment options except for the selected payment option
   hidePaymentOptions();
+
 }
+
 
 // Places cursor on the first input field on load
 function placeCursorOnLoad () {
   $("input[name=user_name]").focus();
 }
+
+
+// Places error messages if JavaScript is enabled
+function placeErrorMessages () {
+
+  // Error Message for no text entered
+  const enterError = $("<div></div>").addClass("tooltip").text(
+                                               "Please enter an email address");
+
+  // Error message for incorrect formatting
+  const formatError = $("<div></div>").addClass("tooltip").text(
+                          "Emails should be formatted in the form ___@___.abc");
+
+  // Adds error messages to the HTML file
+  $("#mail").after(enterError, formatError);
+}
+
 
 // Hides the other-title input if the Other option isn't selected as a job title
 function otherTitleSelected () {
@@ -32,6 +58,7 @@ function otherTitleSelected () {
     $("#other-title").hide();
   }
 }
+
 
 // Hides the color drop down menu until a theme is selected
 function shirtDesignSelected () {
@@ -73,6 +100,8 @@ function shirtDesignSelected () {
   }
 }
 
+
+// Shows total cost of program
 function showCost () {
 
   let totalCost = 0;
@@ -95,17 +124,18 @@ function showCost () {
   }
 }
 
+
 // Strikes out conflicting events
 function strikeOutMatches () {
 
-// Loops through all activities and allows them to be chosen again (later use)
+  // Loops through all activities and allows them to be chosen again (later use)
   for (let activity = 0; activity < 7; activity++) {
     $(".activities label").eq(activity).removeClass("disabled-button");
     $("input[type='checkbox']").eq(activity).removeAttr("disabled");
   }
 
-// Loops through all checkboxes and if a conflicting time is checked,
-// The other activity is greyed out and the checkbox is disabled
+  // Loops through all checkboxes and if a conflicting time is checked,
+  // The other activity is greyed out and the checkbox is disabled
   for (let activity = 0; activity < 7; activity++) {
 
     // Checks if a checkbox is checked
@@ -139,6 +169,7 @@ function updateActivities () {
 
 // Hides payment options that don't match the currently selected option
 function hidePaymentOptions () {
+
   const selectedOption = $("#payment :selected").text();
 
   // Hides all payment options
@@ -162,10 +193,10 @@ function isValidForm () {
   let validForm = true;
 
   // Regex for validation of certain inputs
-  const emailRegex = /\w+@\w+.[A-Za-z]{3}/;
-  const creditCardNumberRegex = /\d{13,16}/;
-  const zipCodeRegex = /\d{5}/;
-  const cvvRegex = /\d{3}/;
+  const emailRegex = /^\w+@\w+.[A-Za-z]{3}$/;
+  const creditCardNumberRegex = /^\d{13,16}$/;
+  const zipCodeRegex = /^\d{5}$/;
+  const cvvRegex = /^\d{3}$/;
 
   resetInvalidInfo();
 
@@ -240,7 +271,7 @@ function resetInvalidInfo () {
 
 // Displays email error if invalid email
 function displayPossError () {
-  const emailRegex = /\w+@\w+\.[A-Za-z]{3}/;
+  const emailRegex = /^\w+@\w+\.[A-Za-z]{3}$/;
   $(".tooltip").hide();
 
   // Error if no text is entere
